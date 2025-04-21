@@ -3,8 +3,8 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify # Import slugify
-# from django.contrib.auth.models import User
+from django.utils.text import slugify
+from django.contrib.auth.models import User
 import uuid
 
 # --- Model Category (giữ nguyên hoặc xóa/sửa tùy ý) ---
@@ -56,6 +56,17 @@ class Product(models.Model):
         MOI_GIOI = 'MG', _('Môi giới')
         CONG_TY = 'CTY', _('Công ty')
 
+    owner = models.ForeignKey(
+        User,
+        related_name='listings', # Giúp truy cập các tin đăng của user: user.listings.all()
+        on_delete=models.CASCADE, # Nếu user bị xóa, các tin đăng của họ cũng bị xóa
+        verbose_name=_('Người đăng'),
+        default=1,
+        # Bạn cần quyết định giá trị mặc định cho các tin đã tồn tại
+        # null=True, blank=True, # Tùy chọn 1: Cho phép null tạm thời
+        # default=1 # Tùy chọn 2: Gán cho user có id=1 (thường là admin đầu tiên)
+    )
+    
     # --- 🧱 Thông tin cơ bản ---
     tieu_de = models.CharField(_('Tiêu đề'), max_length=255, default='Chưa có tiêu đề') # Thêm default
     # slug: blank=True và có logic tự tạo trong save(), không cần default cứng ở đây.
