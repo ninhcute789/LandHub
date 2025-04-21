@@ -20,10 +20,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("cart/", include('cart.urls')),
-    path("orders/", include("orders.urls")),
+    path('admin/', admin.site.urls),  # Đảm bảo đường dẫn admin đúng
+    path('accounts/', include('accounts.urls')),
+    path('cart/', include('cart.urls')),
+    path('orders/', include('orders.urls')),
     path('', include('products.urls', namespace='products')),
-   
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

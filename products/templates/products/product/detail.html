@@ -1,59 +1,123 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load humanize static %} {# Thêm bộ lọc humanize để định dạng số #}
 
-{%block title%}{{product.name}}{%endblock%}
+{% block title %}{{ product.tieu_de }} | LandHub{% endblock %}
 
-{%block content%}
-<div class="container mx-auto p-4 flex">
+{% block content %}
+<div class="max-w-6xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="md:flex">
+        <div class="md:w-1/2 p-4"> {# Thêm padding nếu cần #}
+            {# Ảnh lớn hiển thị chính #}
+           <div class="mb-3 border rounded-lg overflow-hidden shadow-sm">
+               {% with main_image_url=product.anh_dai_dien.url|default:detail_images.0.image.url %}
+                   <img id="mainProductImage"
+                        src="{% if main_image_url %}{{ main_image_url }}{% else %}{% static 'placeholder.png' %}{% endif %}"
+                        alt="{{ product.tieu_de }}"
+                        {# Giữ lại class cũ hoặc điều chỉnh nếu cần #}
+                        class="w-full h-auto object-contain block md:max-h-[600px]">
+               {% endwith %}
+           </div>
 
-<div>
-    {%if product.image%}
-    <img src="{{product.image.url}}" alt={{product.name}} class="max-h-[80vh]">
-    {%else%}
-    <p>The image is not available</p>
-    {%endif%}
-    <h3 class="font-semibold">{{product.name}}</h3>
-    <p>{{product.description}}</p>
-    <p class="text-indigo-600">${{product.price}}</p>
+           {# Danh sách ảnh thumbnails bên dưới ảnh lớn #}
+           {# Điều chỉnh justify-start hoặc justify-center tùy ý #}
+           <div class="flex flex-wrap gap-2 justify-start">
+               {% if product.anh_dai_dien %}
+               <button type="button" class="thumbnail-button border-2 border-indigo-500 rounded p-0.5" data-large-src="{{ product.anh_dai_dien.url }}">
+                   <img src="{{ product.anh_dai_dien.url }}" alt="Thumbnail 1" class="w-16 h-16 object-cover rounded-sm">
+               </button>
+               {% endif %}
+               {% for img in detail_images %}
+               <button type="button" class="thumbnail-button border-2 border-transparent hover:border-gray-400 rounded p-0.5" data-large-src="{{ img.image.url }}">
+                    <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:'Thumbnail' }}" class="w-16 h-16 object-cover rounded-sm">
+               </button>
+               {% endfor %}
+           </div>
+       </div>
+        <div class="p-6 md:w-1/2">
+            {# Thay product.name bằng product.tieu_de #}
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ product.tieu_de }}</h1>
+            {# Thay product.price bằng product.gia, định dạng lại #}
+            <p class="text-red-600 font-bold text-2xl mb-6">{{ product.gia|floatformat:"0"|intcomma }} VNĐ</p>
 
-    <form action="{%url 'cart:cart_add' product.id%}" method="post" id="add-to-cart-form">
-        {% csrf_token %}
-        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-sm">Add to cart</button>
-    <p id="message"></p>
-    </form>
-</div>
+            <h2 class="text-xl font-semibold text-gray-800 mb-3">Thông tin chi tiết</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-gray-700 mb-6">
+                <p><span class="font-medium">Diện tích:</span> {{ product.dien_tich|floatformat:"-2" }} m²</p>
+                <p><span class="font-medium">Mặt tiền:</span> {{ product.mat_tien|floatformat:"-2"|default:"---" }} m</p>
+                 <p><span class="font-medium">Chiều dài:</span> {{ product.chieu_dai|floatformat:"-2"|default:"---" }} m</p>
+                <p><span class="font-medium">Hướng:</span> {{ product.get_huong_display|default:"---" }}</p> {# Sử dụng get_FIELD_display cho trường choices #}
+                <p><span class="font-medium">Pháp lý:</span> {{ product.get_phap_ly_display|default:"---" }}</p>
+                <p><span class="font-medium">Loại đất:</span> {{ product.get_loai_dat_display|default:"---" }}</p>
+            </div>
 
+             <h2 class="text-xl font-semibold text-gray-800 mb-3">Vị trí</h2>
+             <p class="text-gray-700 mb-6">{{ product.dia_chi }}, {{ product.phuong_xa }}, {{ product.quan_huyen }}, {{ product.tinh_thanh }}</p>
+             {# Có thể thêm bản đồ dựa trên vĩ độ, kinh độ nếu có #}
+             {% if product.vi_do and product.kinh_do %}
+                 <div class="mb-6">
+                     </div>
+             {% endif %}
 
+             <h2 class="text-xl font-semibold text-gray-800 mb-3">Mô tả</h2>
+            {# Thay product.description bằng product.mo_ta #}
+            <p class="text-gray-600 mb-6 whitespace-pre-line">{{ product.mo_ta|linebreaksbr }}</p> {# whitespace-pre-line và linebreaksbr để giữ định dạng xuống dòng #}
 
+            {# --- Loại bỏ form giỏ hàng --- #}
+            <!-- <form action="{% url 'cart:cart_add' product_id=product.id %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Add to cart
+                </button>
+            </form> -->
+
+             <h2 class="text-xl font-semibold text-gray-800 mb-3">Thông tin liên hệ</h2>
+             <div class="text-gray-700 mb-6">
+                <p><span class="font-medium">Người bán:</span> {{ product.ten_nguoi_ban }} ({{ product.get_loai_tai_khoan_display }})</p>
+                <p><span class="font-medium">Điện thoại:</span> <a href="tel:{{ product.so_dien_thoai }}" class="text-indigo-600 hover:underline">{{ product.so_dien_thoai }}</a></p>
+                {% if product.email %}
+                <p><span class="font-medium">Email:</span> <a href="mailto:{{ product.email }}" class="text-indigo-600 hover:underline">{{ product.email }}</a></p>
+                {% endif %}
+             </div>
+
+            {# Thay các trường cũ bằng các trường mới phù hợp #}
+            <div class="mt-6 text-sm text-gray-500 border-t pt-4">
+                <p>Mã tin: {{ product.id }}</p>
+                <p>Ngày đăng: {{ product.ngay_dang|date:"H:i - d/m/Y" }}</p>
+                <p>Ngày cập nhật: {{ product.ngay_cap_nhat|date:"H:i - d/m/Y" }}</p>
+                <p>Trạng thái: <span class="font-semibold">{{ product.get_trang_thai_display }}</span></p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    document.getElementById('add-to-cart-form').addEventListener("submit", function(event){
-        event.preventDefault();
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainImage = document.getElementById('mainProductImage');
+        const thumbnailButtons = document.querySelectorAll('.thumbnail-button');
+        let currentActiveButton = document.querySelector('.thumbnail-button.border-indigo-500');
+    
+        // Kiểm tra xem mainImage có tồn tại không trước khi thêm sự kiện
+        if (mainImage) {
+            thumbnailButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const largeSrc = this.getAttribute('data-large-src');
+                    if (largeSrc) {
+                        mainImage.src = largeSrc;
+                        // Cập nhật trạng thái active của thumbnail
+                        if (currentActiveButton) {
+                            currentActiveButton.classList.remove('border-indigo-500');
+                            currentActiveButton.classList.add('border-transparent');
+                        }
+                        this.classList.remove('border-transparent');
+                        this.classList.add('border-indigo-500');
+                        currentActiveButton = this;
+                    }
+                });
+            });
+        } else {
+            console.error("Element with ID 'mainProductImage' not found.");
+        }
+    });
+    </script>
 
-        const form = event.target;
-        const url = form.action;
-        const formData = new FormData(form);
-
-        fetch(url, {
-            method:'POST',
-            headers:{
-                'X-CSRFToken':formData.get('csrfmiddlewaretoken')
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data=>{
-            const messageElement = document.getElementById('message');
-            if (data.success){
-                messageElement.textContent = data.message;
-            }else{
-                message.textContent = "Failed to add to cart";
-            }
-        })
-        .catch(error=>{
-            console.error("Error", error);
-        })
-    })
-</script>
-    {%endblock%}
-
+{% endblock %}
