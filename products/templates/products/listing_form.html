@@ -8,8 +8,8 @@
     <h1 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-3">{{ form_title }}</h1>
 
     {# --- Bắt đầu form --- #}
-    <form method="post" enctype="multipart/form-data" class="space-y-8"> {# Thêm space-y để tạo khoảng cách giữa các khối #}
-        {% csrf_token %}
+        <form method="post" enctype="multipart/form-data" class="space-y-8"> {# Thêm space-y để tạo khoảng cách giữa các khối #}
+            {% csrf_token %}
 
         {# --- Khối Thông tin cơ bản (Ví dụ fieldset) --- #}
         <fieldset class="border rounded-md p-4 bg-white shadow-sm">
@@ -155,6 +155,10 @@
                 {% for image_form in formset %}
                     {# --- Bọc mỗi form trong một div với class ví dụ 'image-form-row' --- #}
                     <div class="image-form-row border rounded p-3 {% if image_form.instance.pk %}bg-gray-50{% else %}bg-blue-50{% endif %} relative">
+                        {% for hidden in image_form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        
                         {% if image_form.instance.pk and image_form.instance.image %}
                             <img src="{{ image_form.instance.image.url }}" alt="Ảnh chi tiết" class="h-20 w-20 ...">
                         {% endif %}

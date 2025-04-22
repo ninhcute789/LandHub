@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'products',
     'cart',
     'orders',
+    'accounts',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,8 @@ STATICFILES_DIRS = [BASE_DIR / "static",]
 MEDIA_URL = 'media/'
 STATIC_ROOT = BASE_DIR/'staticfiles'
 MEDIA_ROOT = BASE_DIR/'mediafiles'
+
+SITE_ID = 1
+
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'products:product_list'
