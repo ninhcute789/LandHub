@@ -85,7 +85,7 @@
                 <div class="bg-white shadow-md rounded-lg overflow-hidden border">
                     <a href="{{ product.get_absolute_url }}">
                         {% if product.anh_dai_dien %}
-                            <img src="{{ product.anh_dai_dien.url }}" alt="{{ product.tieu_de }}" class="w-full h-40 object-cover">
+                            <img src="{{ product.anh_dai_dien.url }}" alt="{{ product.tieu_de }}" class="w-full h-[200px] object-cover">
                         {% else %}
                             <div class="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500">Ảnh không có</div>
                         {% endif %}

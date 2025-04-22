@@ -5,77 +5,96 @@
 
 {% block content %}
 <div class="max-w-4xl mx-auto bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200"> {# Thay đổi max-width và background #}
-    <h1 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-3">{{ form_title }}</h1>
+    <h1 class="text-2xl font-bold text-gray-800 border-b pb-3">{{ form_title }}</h1>
 
     {# --- Bắt đầu form --- #}
-        <form method="post" enctype="multipart/form-data" class="space-y-8"> {# Thêm space-y để tạo khoảng cách giữa các khối #}
+        <form method="post" enctype="multipart/form-data" class="space-y-4"> {# Thêm space-y để tạo khoảng cách giữa các khối #}
             {% csrf_token %}
 
         {# --- Khối Thông tin cơ bản (Ví dụ fieldset) --- #}
-        <fieldset class="border rounded-md p-4 bg-white shadow-sm">
-            <legend class="text-lg font-semibold mb-4 px-2 text-gray-700">Thông tin cơ bản</legend>
+        <fieldset class="border rounded-md px-4 pb-4 bg-white shadow-sm">
+            <legend class="text-xl font-bold mb-4 px-2 text-gray-700">Thông tin cơ bản</legend>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                 {# Render từng field thủ công để kiểm soát layout #}
-                <div class="md:col-span-2"> {# Tiêu đề chiếm cả hàng #}
-                    <label for="{{ form.tieu_de.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.tieu_de.label }}</label>
+                <div class="md:col-span-2">
+                    <label for="{{ form.tieu_de.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">
+                        {{ form.tieu_de.label }}
+                    </label>
                     {{ form.tieu_de }}
-                    {% if form.tieu_de.help_text %}<p class="text-xs text-gray-500 mt-1">{{ form.tieu_de.help_text }}</p>{% endif %}
-                    {% if form.tieu_de.errors %}<p class="text-red-500 text-xs mt-1">{{ form.tieu_de.errors|striptags }}</p>{% endif %}
+                    {% if form.tieu_de.help_text %}
+                    <p class="text-xs text-gray-500 mt-1">{{ form.tieu_de.help_text }}</p>
+                    {% endif %}
+                    {% if form.tieu_de.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ form.tieu_de.errors|striptags }}</p>
+                    {% endif %}
                 </div>
 
                 <div>
-                    <label for="{{ form.gia.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.gia.label }} (VNĐ)</label>
+                    <label for="{{ form.gia.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.gia.label }} (VNĐ)</label>
                     {{ form.gia }}
                     {% if form.gia.errors %}<p class="text-red-500 text-xs mt-1">{{ form.gia.errors|striptags }}</p>{% endif %}
                 </div>
                 <div>
-                    <label for="{{ form.dien_tich.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.dien_tich.label }} (m²)</label>
+                    <label for="{{ form.dien_tich.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.dien_tich.label }}</label>
                     {{ form.dien_tich }}
                     {% if form.dien_tich.errors %}<p class="text-red-500 text-xs mt-1">{{ form.dien_tich.errors|striptags }}</p>{% endif %}
                 </div>
                  <div>
-                    <label for="{{ form.phap_ly.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.phap_ly.label }}</label>
+                    <label for="{{ form.phap_ly.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.phap_ly.label }}</label>
                     {{ form.phap_ly }}
                     {% if form.phap_ly.errors %}<p class="text-red-500 text-xs mt-1">{{ form.phap_ly.errors|striptags }}</p>{% endif %}
                 </div>
                  <div>
-                    <label for="{{ form.huong.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.huong.label }}</label>
+                    <label for="{{ form.huong.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.huong.label }}</label>
                     {{ form.huong }}
                     {% if form.huong.errors %}<p class="text-red-500 text-xs mt-1">{{ form.huong.errors|striptags }}</p>{% endif %}
                 </div>
                  <div>
-                    <label for="{{ form.mat_tien.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.mat_tien.label }} (m)</label>
+                    <label for="{{ form.mat_tien.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.mat_tien.label }}</label>
                     {{ form.mat_tien }}
                     {% if form.mat_tien.errors %}<p class="text-red-500 text-xs mt-1">{{ form.mat_tien.errors|striptags }}</p>{% endif %}
                 </div>
                 <div>
-                    <label for="{{ form.chieu_dai.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.chieu_dai.label }} (m)</label>
+                    <label for="{{ form.chieu_dai.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.chieu_dai.label }}</label>
                     {{ form.chieu_dai }}
                     {% if form.chieu_dai.errors %}<p class="text-red-500 text-xs mt-1">{{ form.chieu_dai.errors|striptags }}</p>{% endif %}
                 </div>
-                 <div class="md:col-span-2">
-                    <label for="{{ form.loai_dat.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.loai_dat.label }}</label>
+                <div class="md:col-span-2">
+                    <label for="{{ form.loai_dat.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.loai_dat.label }}</label>
                     {{ form.loai_dat }}
                     {% if form.loai_dat.errors %}<p class="text-red-500 text-xs mt-1">{{ form.loai_dat.errors|striptags }}</p>{% endif %}
                 </div>
 
                 {# Ảnh đại diện #}
-                 <div class="md:col-span-2">
-                     <label for="{{ form.anh_dai_dien.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.anh_dai_dien.label }}</label>
-                     {# Hiển thị ảnh cũ nếu đang sửa #}
-                     {% if product and product.anh_dai_dien %}
-                     <div class="mb-2">
-                         <img src="{{ product.anh_dai_dien.url }}" alt="Ảnh đại diện hiện tại" class="h-24 w-auto rounded border">
-                         <span class="text-xs text-gray-500 ml-2">Ảnh hiện tại. Chọn ảnh mới để thay thế.</span>
-                     </div>
-                     {% endif %}
-                     {{ form.anh_dai_dien }}
-                     {% if form.anh_dai_dien.errors %}<p class="text-red-500 text-xs mt-1">{{ form.anh_dai_dien.errors|striptags }}</p>{% endif %}
-                 </div>
+                <div class="md:col-span-2">
+                    <label for="{{ form.anh_dai_dien.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">
+                        {{ form.anh_dai_dien.label }}
+                    </label>
+                    {# Hiển thị ảnh cũ nếu đang sửa #}
+                    {% if product and product.anh_dai_dien %}
+                    <div class="mb-2 flex items-center">
+                        <img src="{{ product.anh_dai_dien.url }}" alt="Ảnh đại diện hiện tại" class="h-24 w-24 rounded-md border border-gray-300 shadow-sm">
+                        <span class="text-xs text-gray-500 ml-4">Ảnh hiện tại. Chọn ảnh mới để thay thế.</span>
+                    </div>
+                    {% endif %}
+                    <div class="mt-2">
+                        <label class="block">
+                            <span class="sr-only">Chọn ảnh đại diện</span>
+                            <input
+                                type="file"
+                                class="block w-fit text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                                id="{{ form.anh_dai_dien.id_for_label }}"
+                                name="{{ form.anh_dai_dien.html_name }}">
+                        </label>
+                    </div>
+                    {% if form.anh_dai_dien.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ form.anh_dai_dien.errors|striptags }}</p>
+                    {% endif %}
+                </div>
 
                 {# Mô tả chiếm cả hàng #}
                 <div class="md:col-span-2">
-                    <label for="{{ form.mo_ta.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.mo_ta.label }}</label>
+                    <label for="{{ form.mo_ta.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.mo_ta.label }}</label>
                     {{ form.mo_ta }}
                     {% if form.mo_ta.errors %}<p class="text-red-500 text-xs mt-1">{{ form.mo_ta.errors|striptags }}</p>{% endif %}
                 </div>
@@ -85,59 +104,59 @@
 
 
         {# --- Khối Thông tin vị trí --- #}
-         <fieldset class="border rounded-md p-4 bg-white shadow-sm">
-            <legend class="text-lg font-semibold mb-4 px-2 text-gray-700">Thông tin vị trí</legend>
+         <fieldset class="border rounded-md px-4 pb-4 bg-white shadow-sm">
+            <legend class="text-xl font-bold mb-4 px-2 text-gray-700">Thông tin vị trí</legend>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                  <div class="md:col-span-2">
-                    <label for="{{ form.dia_chi.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.dia_chi.label }}</label>
+                    <label for="{{ form.dia_chi.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.dia_chi.label }}</label>
                     {{ form.dia_chi }}
                     {% if form.dia_chi.errors %}<p class="text-red-500 text-xs mt-1">{{ form.dia_chi.errors|striptags }}</p>{% endif %}
                 </div>
                  <div>
-                    <label for="{{ form.tinh_thanh.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.tinh_thanh.label }}</label>
+                    <label for="{{ form.tinh_thanh.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.tinh_thanh.label }}</label>
                     {{ form.tinh_thanh }}
                     {% if form.tinh_thanh.errors %}<p class="text-red-500 text-xs mt-1">{{ form.tinh_thanh.errors|striptags }}</p>{% endif %}
                 </div>
                 <div>
-                    <label for="{{ form.quan_huyen.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.quan_huyen.label }}</label>
+                    <label for="{{ form.quan_huyen.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.quan_huyen.label }}</label>
                     {{ form.quan_huyen }}
                     {% if form.quan_huyen.errors %}<p class="text-red-500 text-xs mt-1">{{ form.quan_huyen.errors|striptags }}</p>{% endif %}
                 </div>
-                <div>
-                    <label for="{{ form.phuong_xa.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.phuong_xa.label }}</label>
+                <div class="md:col-span-2">
+                    <label for="{{ form.phuong_xa.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.phuong_xa.label }}</label>
                     {{ form.phuong_xa }}
                     {% if form.phuong_xa.errors %}<p class="text-red-500 text-xs mt-1">{{ form.phuong_xa.errors|striptags }}</p>{% endif %}
                 </div>
                 {# Tọa độ (ẩn hoặc hiện tùy ý) #}
-                 {# <div>
-                    <label for="{{ form.vi_do.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.vi_do.label }}</label>
+                <div>
+                    <label for="{{ form.vi_do.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.vi_do.label }}</label>
                     {{ form.vi_do }}
                     {% if form.vi_do.errors %}<p class="text-red-500 text-xs mt-1">{{ form.vi_do.errors|striptags }}</p>{% endif %}
                 </div>
-                 <div>
-                    <label for="{{ form.kinh_do.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.kinh_do.label }}</label>
+                <div>
+                    <label for="{{ form.kinh_do.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.kinh_do.label }}</label>
                     {{ form.kinh_do }}
                     {% if form.kinh_do.errors %}<p class="text-red-500 text-xs mt-1">{{ form.kinh_do.errors|striptags }}</p>{% endif %}
-                </div> #}
+                </div> 
             </div>
          </fieldset>
         {# --- Hết khối Thông tin vị trí --- #}
 
-        <fieldset class="border rounded-md p-4 bg-white shadow-sm">
-            <legend class="text-lg font-semibold mb-4 px-2 text-gray-700">Thông tin liên hệ</legend>
+        <fieldset class="border rounded-md px-4 pb-4 bg-white shadow-sm">
+            <legend class="text-xl font-bold mb-4 px-2 text-gray-700">Thông tin liên hệ</legend>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                  <div class="md:col-span-2"> {# Tên người bán chiếm cả hàng #}
-                    <label for="{{ form.ten_nguoi_ban.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.ten_nguoi_ban.label }}</label>
+                    <label for="{{ form.ten_nguoi_ban.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.ten_nguoi_ban.label }}</label>
                     {{ form.ten_nguoi_ban }}
                     {% if form.ten_nguoi_ban.errors %}<p class="text-red-500 text-xs mt-1">{{ form.ten_nguoi_ban.errors|striptags }}</p>{% endif %}
                 </div>
                  <div>
-                    <label for="{{ form.so_dien_thoai.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.so_dien_thoai.label }}</label>
+                    <label for="{{ form.so_dien_thoai.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.so_dien_thoai.label }}</label>
                     {{ form.so_dien_thoai }}
                     {% if form.so_dien_thoai.errors %}<p class="text-red-500 text-xs mt-1">{{ form.so_dien_thoai.errors|striptags }}</p>{% endif %}
                 </div>
                 <div>
-                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.email.label }}</label>
+                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.email.label }}</label>
                     {{ form.email }}
                     {% if form.email.errors %}<p class="text-red-500 text-xs mt-1">{{ form.email.errors|striptags }}</p>{% endif %}
                 </div>
@@ -147,7 +166,7 @@
 
         {# --- Khối Ảnh chi tiết (Formset) --- #}
         <fieldset class="border rounded-md p-4 bg-white shadow-sm">
-            <legend class="text-lg font-semibold mb-4 px-2 text-gray-700">Ảnh chi tiết</legend>
+            <legend class="text-xl font-bold mb-1 px-2 text-gray-700">Ảnh chi tiết</legend>
             {{ formset.management_form }} {# Vẫn cần Management Form #}
 
             {# Container cho các form ảnh #}
@@ -164,11 +183,11 @@
                         {% endif %}
                         <div class="inline-block align-top space-y-2" style="width: calc(100% - 100px);">
                              <div>
-                                <label ...>{{ image_form.image.label }}</label>
+                                <div class=" ml-3"><label ...>{{ image_form.image.label }}</label></div>
                                 {{ image_form.image }}
                              </div>
                             <div>
-                                <label ...>{{ image_form.alt_text.label }}</label>
+                                <div class=" ml-3"><label ...>{{ image_form.alt_text.label }}</label></div>
                                 {{ image_form.alt_text }}
                             </div>
                         </div>
