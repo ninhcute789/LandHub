@@ -35,7 +35,9 @@ def login_view(request):
             return redirect('products:product_list')
         else:
             messages.error(request, 'Thông tin đăng nhập không đúng!')
-    return render(request, 'accounts/login.html')
+    return render(request, 'accounts/login.html', {
+        'messages': messages.get_messages(request)
+    })
 
 # Đăng xuất người dùng
 def logout_view(request):
