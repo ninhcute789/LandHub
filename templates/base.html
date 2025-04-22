@@ -2,10 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>{%block title%}My Super Cool Shop Site{%endblock%}</title>
+    <title>{% block title %}My Super Cool Shop Site{% endblock %}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- Thêm Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Giữ lại CSS hiện tại -->
     {% load static %}
     <link href="{% static 'dist/styles.css' %}" rel="stylesheet" />
+
     <meta name="description" content="" />
     <link rel="icon" href="favicon.png" />
   </head>
