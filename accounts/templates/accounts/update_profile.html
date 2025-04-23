@@ -1,0 +1,127 @@
+{% extends 'base.html' %} 
+{% block title %}Cập nhật thông tin cá nhân{% endblock %} 
+{% block content %}
+<div class="container mx-auto py-8 px-4 max-w-3xl">
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Cập nhật thông tin cá nhân</h1>
+
+    {% if messages %}
+    <div class="mb-4">
+      {% for message in messages %}
+      <div
+        class="p-4 rounded-md {% if message.tags == 'error' %}bg-red-50 text-red-700 border border-red-200{% else %}bg-green-50 text-green-700 border border-green-200{% endif %}">
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="space-y-6">
+      {% csrf_token %}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Họ -->
+        <div>
+          <label for="id_first_name" class="block text-sm font-medium text-gray-700 mb-1">Họ</label>
+          <input
+            type="text"
+            name="first_name"
+            value="{{ profile_form.first_name.initial }}"
+            id="id_first_name"
+            class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Nhập họ" />
+        </div>
+
+        <!-- Tên -->
+        <div>
+          <label for="id_last_name" class="block text-sm font-medium text-gray-700 mb-1">Tên</label>
+          <input
+            type="text"
+            name="last_name"
+            value="{{ profile_form.last_name.initial }}"
+            id="id_last_name"
+            class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Nhập tên" />
+        </div>
+
+        <!-- Số điện thoại -->
+        <div>
+          <label
+            for="{{ profile_form.phone_number.id_for_label }}"
+            class="block text-sm font-medium text-gray-700 mb-1"
+            >Số điện thoại</label
+          >
+          <input
+            type="text"
+            name="phone_number"
+            value="{{ profile_form.phone_number.value|default:'' }}"
+            id="{{ profile_form.phone_number.id_for_label }}"
+            class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Nhập số điện thoại" />
+        </div>
+
+        <!-- Ngày sinh -->
+        <div>
+          <label
+            for="{{ profile_form.birth_date.id_for_label }}"
+            class="block text-sm font-medium text-gray-700 mb-1"
+            >Ngày sinh</label
+          >
+          <input
+            type="date"
+            name="birth_date"
+            value="{{ profile_form.birth_date.value|date:'Y-m-d'|default:'' }}"
+            id="{{ profile_form.birth_date.id_for_label }}"
+            class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        </div>
+      </div>
+
+      <!-- Avatar -->
+      <div>
+        <label
+          for="{{ profile_form.avatar.id_for_label }}"
+          class="block text-sm font-medium text-gray-700 mb-1"
+          >Ảnh đại diện</label
+        >
+
+        <!-- Hiển thị avatar hiện tại nếu có -->
+        {% if request.user.profile.avatar %}
+        <div class="mb-4 flex items-center">
+          <img
+            src="{{ request.user.profile.avatar.url }}"
+            alt="Avatar hiện tại"
+            class="w-16 h-16 object-cover rounded-full" />
+          <span class="ml-4 text-sm text-gray-500"
+            >Ảnh đại diện hiện tại. Chọn ảnh mới để thay thế.</span
+          >
+        </div>
+        {% endif %}
+
+        <!-- Input upload ảnh -->
+        <input
+          type="file"
+          name="avatar"
+          id="{{ profile_form.avatar.id_for_label }}"
+          class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+
+        {% if profile_form.avatar.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ profile_form.avatar.errors }}</p>
+        {% endif %}
+        <p class="text-xs text-gray-500 mt-1">Tải lên ảnh đại diện của bạn (PNG, JPG, JPEG)</p>
+      </div>
+
+      <!-- Nút Lưu -->
+      <div class="flex items-center justify-between pt-4">
+        <button
+          type="submit"
+          class="py-2 px-6 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+          Lưu thông tin
+        </button>
+        <a href="{% url 'products:product_list' %}" class="text-indigo-600 hover:text-indigo-800">
+          Bỏ qua
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

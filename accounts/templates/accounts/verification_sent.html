@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% block title %}Kiểm tra email của bạn{% endblock %} {% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gray-50 px-4 py-12">
+  <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg space-y-6">
+    <div class="text-center">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-16 w-16 mx-auto text-indigo-600"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+      <h2 class="text-2xl font-bold text-gray-900 mt-4">Kiểm tra email của bạn</h2>
+    </div>
+
+    <p class="text-gray-600 text-center">
+      Chúng tôi đã gửi một email xác thực tới địa chỉ email của bạn.<br />
+      Vui lòng kiểm tra hộp thư đến và nhấp vào liên kết xác thực để hoàn tất quá trình đăng ký.
+    </p>
+
+    <div class="text-gray-500 text-sm text-center mt-4 space-y-2">
+      <p>Không nhận được email?</p>
+      <p>Vui lòng kiểm tra thư mục spam hoặc thử đăng ký lại sau vài phút.</p>
+    </div>
+
+    <div class="pt-4 text-center">
+      <a
+        href="{% url 'accounts:login' %}"
+        class="text-indigo-600 hover:text-indigo-800 font-medium">
+        Quay lại trang đăng nhập
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

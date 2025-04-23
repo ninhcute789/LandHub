@@ -91,3 +91,71 @@ class UserRegisterForm(UserCreationForm):
         if commit:
             user.profile.save()
         return user
+
+class EmailRegistrationForm(UserCreationForm):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+            'placeholder': 'example@email.com',
+            'required': 'required',
+        }),
+        required=True
+    )
+    
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+            'placeholder': 'Mật khẩu',
+        })
+    )
+    
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+            'placeholder': 'Nhập lại mật khẩu',
+        })
+    )
+
+    class Meta:
+        model = User
+        fields = ['email', 'password1', 'password2']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Tùy chỉnh thông báo lỗi
+        self.fields['password1'].help_text = 'Mật khẩu của bạn phải chứa ít nhất 8 ký tự'
+        self.fields['password2'].help_text = 'Nhập lại mật khẩu để xác nhận'
+        # Không cần username trong form
+        if 'username' in self.fields:
+            del self.fields['username']
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email này đã được sử dụng.")
+        return email
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        # Sử dụng email làm username
+        user.username = self.cleaned_data.get('email')
+        user.email = self.cleaned_data.get('email')
+        user.is_active = False  # Tài khoản chưa được kích hoạt
+        
+        if commit:
+            user.save()
+            # Tạo profile cho user
+            Profile.objects.get_or_create(user=user)
+        
+        return user
+
+class ProfileUpdateForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=30, required=False)
+    last_name = forms.CharField(max_length=30, required=False)
+    
+    class Meta:
+        model = Profile
+        fields = ['phone_number', 'birth_date', 'avatar']
+        widgets = {
+            'birth_date': forms.DateInput(attrs={'type': 'date'}),
+        }
