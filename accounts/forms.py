@@ -106,6 +106,7 @@ class EmailRegistrationForm(UserCreationForm):
         widget=forms.PasswordInput(attrs={
             'class': 'appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
             'placeholder': 'Mật khẩu',
+            'autocomplete': 'new-password',  # Ngăn tự động điền
         })
     )
     
@@ -113,6 +114,7 @@ class EmailRegistrationForm(UserCreationForm):
         widget=forms.PasswordInput(attrs={
             'class': 'appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
             'placeholder': 'Nhập lại mật khẩu',
+            'autocomplete': 'new-password',  # Ngăn tự động điền
         })
     )
 

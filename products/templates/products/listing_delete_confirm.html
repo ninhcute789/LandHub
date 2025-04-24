@@ -8,7 +8,7 @@
     <p class="mb-6">Bạn có chắc chắn muốn xóa tin đăng: <br><strong>"{{ product.tieu_de }}"</strong>?</p>
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 mr-4">
+        <button type="submit" class="duration-300 bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 mr-4">
             Xác nhận Xóa
         </button>
         <a href="{% url 'products:my_listings' %}" class="text-gray-600 hover:text-indigo-600">

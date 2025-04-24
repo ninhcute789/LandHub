@@ -53,7 +53,7 @@
                         {# --- Lọc theo Hướng (Giữ nguyên) --- #}
                         <div class="mb-4">
                             <h3 class="font-medium mb-2 text-sm">Hướng</h3>
-                            <div class="space-y-1 max-h-32 overflow-y-auto text-xs"> {# Giảm max-h, cỡ chữ #}
+                            <div class="space-y-1 h-fit overflow-y-auto text-xs"> {# Giảm max-h, cỡ chữ #}
                                 {% for value, label in huong_choices %}
                                 <label class="flex items-center">
                                     <input type="checkbox" name="huong" value="{{ value }}"
@@ -96,7 +96,7 @@
                         </div>
     
                         {# --- Nút Tìm kiếm --- #}
-                        <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md font-semibold hover:bg-indigo-700 transition duration-200 mt-4 text-sm">
+                        <button type="submit" class="duration-300 w-full bg-indigo-600 text-white py-2 px-4 rounded-md font-semibold hover:bg-indigo-700 transition mt-4 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1 -mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
                             Tìm kiếm
                         </button>
@@ -116,7 +116,7 @@
                     {# Sửa ở đây: lặp qua page_obj #}
                     {% for product in page_obj %}
                     {# --- Card sản phẩm --- #}
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden border">
+                    <div class="bg-white shadow-md rounded-lg overflow-hidden border hover:shadow-xl duration-300">
                          <a href="{{ product.get_absolute_url }}">
                             {% if product.anh_dai_dien %}
                                 <img src="{{ product.anh_dai_dien.url }}" alt="{{ product.tieu_de }}" class="w-full h-[200px] object-cover">
@@ -152,23 +152,25 @@
                 {# --- PHẦN PHÂN TRANG --- #}
                 {# Sửa ở đây: dùng page_obj thay vì page #}
                 {% if page_obj.has_other_pages %}
-                <nav aria-label="Page navigation" class="mt-8 flex justify-center">
+                <nav aria-label="Page navigation" class="min-h-20 mt-8 flex justify-center">
                 <ul class="inline-flex items-center -space-x-px">
                     {# Nút Previous #}
                     {% if page_obj.has_previous %}
                     <li>
-                        <a href="?page={{ page_obj.previous_page_number }}{% for key, value_list in request.GET.lists %}{% if key != 'page' %}{% for value in value_list %}&amp;{{ key }}={{ value }}{% endfor %}{% endif %}{% endfor %}"
-                           class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
-                           <span class="sr-only">Previous</span>
-                           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                        </a>
+                        <div onclick="window.location.href='?page={{ page_obj.previous_page_number }}{% for key, value_list in request.GET.lists %}{% if key != 'page' %}{% for value in value_list %}&amp;{{ key }}={{ value }}{% endfor %}{% endif %}{% endfor %}'"
+                             class="h-[38.67px] cursor-pointer w-fit py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                            <span class="sr-only">Previous</span>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
                     </li>
                     {% else %}
                     <li>
-                        <span class="py-2 px-3 ml-0 leading-tight text-gray-300 bg-white rounded-l-lg border border-gray-300 cursor-not-allowed">
+                        <div class="h-[38.67px] w-full py-2 px-3 ml-0 leading-tight text-gray-300 bg-white rounded-l-lg border border-gray-300 cursor-not-allowed">
                            <span class="sr-only">Previous</span>
-                           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                        </span>
+                           <svg class="w-5 h-5 flex items-center" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                        </div>
                     </li>
                     {% endif %}
             
@@ -181,7 +183,7 @@
                        {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %} {# Sửa: page_obj.number #}
                         <li>
                            <a href="?page={{ i }}{% for key, value_list in request.GET.lists %}{% if key != 'page' %}{% for value in value_list %}&amp;{{ key }}={{ value }}{% endfor %}{% endif %}{% endfor %}"
-                              class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">{{ i }}</a>
+                              class="min-h-20 py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">{{ i }}</a>
                         </li>
                        {% elif i == page_obj.number|add:'-3' or i == page_obj.number|add:'3' %} {# Sửa: page_obj.number #}
                         <li>
@@ -193,18 +195,20 @@
                     {# Nút Next #}
                     {% if page_obj.has_next %} {# Sửa: page_obj.has_next #}
                     <li>
-                        <a href="?page={{ page_obj.next_page_number }}{% for key, value_list in request.GET.lists %}{% if key != 'page' %}{% for value in value_list %}&amp;{{ key }}={{ value }}{% endfor %}{% endif %}{% endfor %}" {# Sửa: page_obj.next_page_number #}
-                           class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
-                           <span class="sr-only">Next</span>
-                           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        </a>
+                        <div onclick="window.location.href='?page={{ page_obj.next_page_number }}{% for key, value_list in request.GET.lists %}{% if key != 'page' %}{% for value in value_list %}&amp;{{ key }}={{ value }}{% endfor %}{% endif %}{% endfor %}'"
+                             class="h-[38.67px] cursor-pointer py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                            <span class="sr-only">Next</span>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
                     </li>
                     {% else %}
                     <li>
-                        <span class="py-2 px-3 leading-tight text-gray-300 bg-white rounded-r-lg border border-gray-300 cursor-not-allowed">
+                        <div class="h-[38.67px] py-2 px-3 leading-tight text-gray-300 bg-white rounded-r-lg border border-gray-300 cursor-not-allowed">
                            <span class="sr-only">Next</span>
                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        </span>
+                        </div>
                     </li>
                     {% endif %}
                 </ul>

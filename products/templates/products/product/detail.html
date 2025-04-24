@@ -115,14 +115,14 @@
              {# Nút gọi và Zalo #}
              <div class="flex gap-3 mb-4">
                 <a href="tel:{{ product.so_dien_thoai }}"
-                   class="flex-1 text-center bg-green-100 text-green-800 px-4 py-2.5 rounded-md font-semibold hover:bg-green-200 hover:text-green-900 transition duration-200 flex items-center justify-center text-sm border border-green-200"> {# Nền xanh lá nhạt, chữ xanh lá đậm #}
+                   class="flex-1 text-center bg-green-100 text-green-800 px-4 py-2.5 rounded-md font-semibold hover:bg-green-200 hover:text-green-900 transition duration-300 flex items-center justify-center text-sm border border-green-200"> {# Nền xanh lá nhạt, chữ xanh lá đậm #}
                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-1.5">
                     <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21 11.72 11.72 0 004.61 1.11 1 1 0 011 1v3.61a1 1 0 01-1 1A19.91 19.91 0 012 4a1 1 0 011-1h3.61a1 1 0 011 1 11.72 11.72 0 001.11 4.61 1 1 0 01-.21 1.11l-2.2 2.2z" />
                 </svg>
                                     Gọi điện
                 </a>
                 <a href="https://zalo.me/{{ product.so_dien_thoai }}" target="_blank" rel="noopener noreferrer"
-                   class="flex-1 text-center bg-blue-100 text-blue-800 px-4 py-2.5 rounded-md font-semibold hover:bg-blue-200 hover:text-blue-900 transition duration-200 flex items-center justify-center text-sm border border-blue-200"> {# Nền xanh dương nhạt, chữ xanh dương đậm #}
+                   class="flex-1 text-center bg-blue-100 text-blue-800 px-4 py-2.5 rounded-md font-semibold hover:bg-blue-200 hover:text-blue-900 transition duration-300 flex items-center justify-center text-sm border border-blue-200"> {# Nền xanh dương nhạt, chữ xanh dương đậm #}
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 16 16"> <path d="M15.99 1.69a1.35 1.35 0 0 0-.7-.49C14.3 1 11.6.5 8 .5S1.7 1 .7 1.19A1.35 1.35 0 0 0 0 2.54v9.92a1.35 1.35 0 0 0 .63.92c1.02.5 3.9 1.4 7.4 1.4 3.3 0 6.1-.9 7.2-1.35a1.35 1.35 0 0 0 .77-1V2.54a1.35 1.35 0 0 0-.01-.85ZM8.5 10.65l-1.5 1.3V10.5h-1a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v3.5a1 1 0 0 1-1 1h-1.5Zm-3-1.9h1.5v1.9l1.5-1.3h1.5V6h-4.5ZM12 7.5H9.5V6H12Z"/> </svg>
                     Chat Zalo
                 </a>
@@ -146,13 +146,13 @@
                 <div class="flex gap-3">
                     {# Nút Sửa #}
                     <a href="{% url 'products:edit_listing' pk=product.pk %}"
-                        class="flex-1 text-center bg-yellow-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-yellow-700 transition duration-200 flex items-center justify-center text-sm">
+                        class="flex-1 text-center bg-yellow-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-yellow-700 transition duration-300 flex items-center justify-center text-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1.5 text-white" viewBox="0 0 16 16" fill="currentColor"> <path d="M13.488 2.513a1.75 1.75 0 0 0-2.475 0L3 10.537V13h2.462l7.976-8.024a1.75 1.75 0 0 0 0-2.463ZM4.14 11.5l6.78-6.818 1.06 1.06-6.78 6.818H4.14Z" fill="white"/> </svg>
                         Sửa tin
                     </a>
                     {# Nút Xóa #}
                     <a href="{% url 'products:delete_listing' pk=product.pk %}"
-                        class="flex-1 text-center bg-red-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-red-700 transition duration-200 flex items-center justify-center text-sm">
+                        class="flex-1 text-center bg-red-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-red-700 transition duration-300 flex items-center justify-center text-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1.5" viewBox="0 0 16 16" fill="currentColor"> <path fill-rule="evenodd" d="M5 3.25V4H2.75a.75.75 0 0 0 0 1.5h.3l.815 8.15A1.5 1.5 0 0 0 5.357 15h5.286a1.5 1.5 0 0 0 1.492-1.35L13 5.5h.25a.75.75 0 0 0 0-1.5H11V3.25a.75.75 0 0 0-1.5 0V4H6.5V3.25a.75.75 0 0 0-1.5 0ZM11.5 5.5l-.75 7.5H5.25l-.75-7.5h7Z" clip-rule="evenodd"/> </svg>
                         Xóa tin
                     </a>
