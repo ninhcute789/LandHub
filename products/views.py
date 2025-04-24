@@ -3,7 +3,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required # Yêu cầu đăng nhập
 from django.http import HttpResponseForbidden # Trả lỗi nếu không có quyền
 from django.urls import reverse_lazy
-from django.db import transaction # Để đảm bảo lưu form và formset cùng lúc
+from django.db import transaction
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from decimal import Decimal, InvalidOperation
 
 from .models import Product, ProductImage #, Category
 from .forms import ProductForm, ProductImageFormSet # Import form
@@ -21,6 +23,17 @@ def product_list(request):
     selected_huong = request.GET.getlist('huong')
     selected_phap_ly = request.GET.getlist('phap_ly')
     selected_loai_dat = request.GET.getlist('loai_dat')
+    
+    selected_tinh_thanh = request.GET.get('tinh_thanh', '') # Dùng get với default rỗng
+    min_price_str = request.GET.get('min_price', '')
+    max_price_str = request.GET.get('max_price', '')
+    min_area_str = request.GET.get('min_area', '')
+    max_area_str = request.GET.get('max_area', '')
+    
+    tinh_thanh_choices = Product.objects.filter(available=True)\
+                                        .values_list('tinh_thanh', flat=True)\
+                                        .distinct()\
+                                        .order_by('tinh_thanh')
     # Lấy các giá trị lọc khác nếu có
 
     # Bắt đầu với queryset cơ bản
@@ -33,10 +46,43 @@ def product_list(request):
         products = products.filter(phap_ly__in=selected_phap_ly)
     if selected_loai_dat:
         products = products.filter(loai_dat__in=selected_loai_dat)
+    if selected_tinh_thanh:
+        products = products.filter(tinh_thanh=selected_tinh_thanh)
     # Áp dụng các bộ lọc khác nếu có
+    try:
+        if min_price_str:
+            min_price = Decimal(min_price_str)
+            products = products.filter(gia__gte=min_price)
+    except (ValueError, InvalidOperation):
+        pass # Bỏ qua nếu giá trị không hợp lệ
+    try:
+        if max_price_str:
+             max_price = Decimal(max_price_str)
+             products = products.filter(gia__lte=max_price)
+    except (ValueError, InvalidOperation):
+        pass # Bỏ qua nếu giá trị không hợp lệ
 
+    # Lọc diện tích - cần xử lý lỗi
+    try:
+        if min_area_str:
+            min_area = Decimal(min_area_str)
+            products = products.filter(dien_tich__gte=min_area)
+    except (ValueError, InvalidOperation):
+        pass
+    try:
+        if max_area_str:
+             max_area = Decimal(max_area_str)
+             products = products.filter(dien_tich__lte=max_area)
+    except (ValueError, InvalidOperation):
+        pass
+    
+    
+    paginator = Paginator(products, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     context = {
-        'products': products,
+        'page_obj': page_obj,
         'huong_choices': huong_choices,
         'phap_ly_choices': phap_ly_choices,
         'loai_dat_choices': loai_dat_choices,
@@ -44,6 +90,12 @@ def product_list(request):
         'selected_huong': selected_huong,
         'selected_phap_ly': selected_phap_ly,
         'selected_loai_dat': selected_loai_dat,
+        'tinh_thanh_choices': tinh_thanh_choices,
+        'selected_tinh_thanh': selected_tinh_thanh,
+        'min_price': min_price_str, # Gửi lại chuỗi để hiển thị trên form
+        'max_price': max_price_str,
+        'min_area': min_area_str,
+        'max_area': max_area_str,
         # Thêm các choices và selected values khác nếu cần
     }
     return render(request, 'products/product/list.html', context)

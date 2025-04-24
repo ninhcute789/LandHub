@@ -53,9 +53,54 @@
              <p class="text-gray-700 mb-6">{{ product.dia_chi }}, {{ product.phuong_xa }}, {{ product.quan_huyen }}, {{ product.tinh_thanh }}</p>
              {# Có thể thêm bản đồ dựa trên vĩ độ, kinh độ nếu có #}
              {% if product.vi_do and product.kinh_do %}
-                 <div class="mb-6">
+                     <div class="mb-6 border rounded-lg overflow-hidden shadow-sm">
+                         {# Thẻ div này sẽ chứa bản đồ, cần có ID và chiều cao #}
+                         <div id="mapid" style="height: 300px;"></div>
                      </div>
-             {% endif %}
+
+                     {# Script để khởi tạo bản đồ Leaflet #}
+                     <script>
+                         document.addEventListener('DOMContentLoaded', function() {
+                             // Lấy tọa độ từ biến Django (chuyển sang số thực)
+                             // Lưu ý: Cần đảm bảo product.vi_do và product.kinh_do là số hợp lệ trong DB
+                             const lat = parseFloat("{{ product.vi_do|stringformat:'.6f'|escapejs }}"); // stringformat để đảm bảo dấu . thập phân
+                             const lon = parseFloat("{{ product.kinh_do|stringformat:'.6f'|escapejs }}");
+                             const zoomLevel = 15; // Mức độ zoom ban đầu
+
+                             // Kiểm tra xem tọa độ có hợp lệ không
+                             if (!isNaN(lat) && !isNaN(lon)) {
+                                 try {
+                                     // Khởi tạo bản đồ, đặt view vào tọa độ và mức zoom
+                                     const map = L.map('mapid').setView([lat, lon], zoomLevel);
+
+                                     // Thêm lớp bản đồ nền (ví dụ: OpenStreetMap)
+                                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                         maxZoom: 19,
+                                         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                                     }).addTo(map);
+
+                                     // Thêm đánh dấu (marker) vào đúng tọa độ
+                                     const marker = L.marker([lat, lon]).addTo(map);
+
+                                     // Tùy chọn: Thêm popup cho marker
+                                     marker.bindPopup("<b>{{ product.tieu_de|escapejs }}</b><br>Vị trí bất động sản.").openPopup();
+
+                                 } catch(e) {
+                                     console.error("Lỗi khởi tạo bản đồ Leaflet:", e);
+                                     // Có thể hiển thị thông báo lỗi thay cho bản đồ
+                                     document.getElementById('mapid').innerHTML = '<p class="p-4 text-center text-red-500">Không thể tải bản đồ.</p>';
+                                 }
+                             } else {
+                                 console.error("Tọa độ không hợp lệ:", "{{ product.vi_do }}", "{{ product.kinh_do }}");
+                                 document.getElementById('mapid').innerHTML = '<p class="p-4 text-center text-gray-500">Tọa độ vị trí không hợp lệ.</p>';
+                             }
+                         });
+                     </script>
+                 {% else %}
+                     {# Có thể hiển thị thông báo nếu không có tọa độ #}
+                     <p class="text-sm text-gray-500 mb-6">(Chưa có thông tin tọa độ để hiển thị bản đồ)</p>
+                 {% endif %}
+                 {# --- Hết phần bản đồ --- #}
 
              <h2 class="text-xl font-semibold text-gray-800 mb-3">Mô tả</h2>
             {# Thay product.description bằng product.mo_ta #}

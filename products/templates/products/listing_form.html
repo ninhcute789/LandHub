@@ -4,97 +4,76 @@
 {% block title %}{{ form_title }}{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200"> {# Thay đổi max-width và background #}
-    <h1 class="text-2xl font-bold text-gray-800 border-b pb-3">{{ form_title }}</h1>
+<div class="max-w-4xl mx-auto bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-3">{{ form_title }}</h1>
 
     {# --- Bắt đầu form --- #}
-        <form method="post" enctype="multipart/form-data" class="space-y-4"> {# Thêm space-y để tạo khoảng cách giữa các khối #}
-            {% csrf_token %}
+    <form method="post" enctype="multipart/form-data" class="space-y-8"> {# Đổi lại space-y-8 #}
+        {% csrf_token %}
 
-        {# --- Khối Thông tin cơ bản (Ví dụ fieldset) --- #}
-        <fieldset class="border rounded-md px-4 pb-4 bg-white shadow-sm">
-            <legend class="text-xl font-bold mb-4 px-2 text-gray-700">Thông tin cơ bản</legend>
+        {# --- Khối Thông tin cơ bản --- #}
+        <fieldset class="border rounded-md px-4 pt-3 pb-4 bg-white shadow-sm"> {# Điều chỉnh padding #}
+            <legend class="text-lg font-semibold mb-4 px-2 text-gray-700 -ml-2">Thông tin cơ bản</legend> {# Điều chỉnh legend #}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                {# Render từng field thủ công để kiểm soát layout #}
+                {# Render từng field thủ công #}
                 <div class="md:col-span-2">
-                    <label for="{{ form.tieu_de.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">
-                        {{ form.tieu_de.label }}
-                    </label>
+                    <label for="{{ form.tieu_de.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.tieu_de.label }}</label>
                     {{ form.tieu_de }}
-                    {% if form.tieu_de.help_text %}
-                    <p class="text-xs text-gray-500 mt-1">{{ form.tieu_de.help_text }}</p>
-                    {% endif %}
-                    {% if form.tieu_de.errors %}
-                    <p class="text-red-500 text-xs mt-1">{{ form.tieu_de.errors|striptags }}</p>
-                    {% endif %}
+                    {% if form.tieu_de.help_text %}<p class="text-xs text-gray-500 mt-1">{{ form.tieu_de.help_text }}</p>{% endif %}
+                    {% if form.tieu_de.errors %}<p class="text-red-500 text-xs mt-1">{{ form.tieu_de.errors|striptags }}</p>{% endif %}
                 </div>
-
                 <div>
-                    <label for="{{ form.gia.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.gia.label }} (VNĐ)</label>
+                    <label for="{{ form.gia.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.gia.label }} (VNĐ)</label>
                     {{ form.gia }}
                     {% if form.gia.errors %}<p class="text-red-500 text-xs mt-1">{{ form.gia.errors|striptags }}</p>{% endif %}
                 </div>
                 <div>
-                    <label for="{{ form.dien_tich.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.dien_tich.label }}</label>
+                    <label for="{{ form.dien_tich.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.dien_tich.label }} (m²)</label>
                     {{ form.dien_tich }}
                     {% if form.dien_tich.errors %}<p class="text-red-500 text-xs mt-1">{{ form.dien_tich.errors|striptags }}</p>{% endif %}
                 </div>
-                 <div>
-                    <label for="{{ form.phap_ly.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.phap_ly.label }}</label>
+                <div>
+                    <label for="{{ form.phap_ly.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.phap_ly.label }}</label>
                     {{ form.phap_ly }}
                     {% if form.phap_ly.errors %}<p class="text-red-500 text-xs mt-1">{{ form.phap_ly.errors|striptags }}</p>{% endif %}
                 </div>
-                 <div>
-                    <label for="{{ form.huong.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.huong.label }}</label>
+                <div>
+                    <label for="{{ form.huong.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.huong.label }}</label>
                     {{ form.huong }}
                     {% if form.huong.errors %}<p class="text-red-500 text-xs mt-1">{{ form.huong.errors|striptags }}</p>{% endif %}
                 </div>
-                 <div>
-                    <label for="{{ form.mat_tien.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.mat_tien.label }}</label>
+                <div>
+                    <label for="{{ form.mat_tien.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.mat_tien.label }} (m)</label>
                     {{ form.mat_tien }}
                     {% if form.mat_tien.errors %}<p class="text-red-500 text-xs mt-1">{{ form.mat_tien.errors|striptags }}</p>{% endif %}
                 </div>
                 <div>
-                    <label for="{{ form.chieu_dai.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.chieu_dai.label }}</label>
+                    <label for="{{ form.chieu_dai.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.chieu_dai.label }} (m)</label>
                     {{ form.chieu_dai }}
                     {% if form.chieu_dai.errors %}<p class="text-red-500 text-xs mt-1">{{ form.chieu_dai.errors|striptags }}</p>{% endif %}
                 </div>
                 <div class="md:col-span-2">
-                    <label for="{{ form.loai_dat.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.loai_dat.label }}</label>
+                    <label for="{{ form.loai_dat.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.loai_dat.label }}</label>
                     {{ form.loai_dat }}
                     {% if form.loai_dat.errors %}<p class="text-red-500 text-xs mt-1">{{ form.loai_dat.errors|striptags }}</p>{% endif %}
                 </div>
-
                 {# Ảnh đại diện #}
                 <div class="md:col-span-2">
-                    <label for="{{ form.anh_dai_dien.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">
-                        {{ form.anh_dai_dien.label }}
-                    </label>
-                    {# Hiển thị ảnh cũ nếu đang sửa #}
+                    <label for="{{ form.anh_dai_dien.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.anh_dai_dien.label }}</label>
                     {% if product and product.anh_dai_dien %}
                     <div class="mb-2 flex items-center">
-                        <img src="{{ product.anh_dai_dien.url }}" alt="Ảnh đại diện hiện tại" class="h-24 w-24 rounded-md border border-gray-300 shadow-sm">
-                        <span class="text-xs text-gray-500 ml-4">Ảnh hiện tại. Chọn ảnh mới để thay thế.</span>
+                        <img src="{{ product.anh_dai_dien.url }}" alt="Ảnh đại diện hiện tại" class="h-24 w-auto rounded border">
+                        <span class="text-xs text-gray-500 ml-2">Ảnh hiện tại.</span>
                     </div>
                     {% endif %}
-                    <div class="mt-2">
-                        <label class="block">
-                            <span class="sr-only">Chọn ảnh đại diện</span>
-                            <input
-                                type="file"
-                                class="block w-fit text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                                id="{{ form.anh_dai_dien.id_for_label }}"
-                                name="{{ form.anh_dai_dien.html_name }}">
-                        </label>
-                    </div>
-                    {% if form.anh_dai_dien.errors %}
-                    <p class="text-red-500 text-xs mt-1">{{ form.anh_dai_dien.errors|striptags }}</p>
-                    {% endif %}
+                     {# Sử dụng widget mặc định của field #}
+                    {{ form.anh_dai_dien }}
+                    {% if form.anh_dai_dien.help_text %}<p class="text-xs text-gray-500 mt-1">{{ form.anh_dai_dien.help_text }}</p>{% endif %}
+                    {% if form.anh_dai_dien.errors %}<p class="text-red-500 text-xs mt-1">{{ form.anh_dai_dien.errors|striptags }}</p>{% endif %}
                 </div>
-
-                {# Mô tả chiếm cả hàng #}
+                {# Mô tả #}
                 <div class="md:col-span-2">
-                    <label for="{{ form.mo_ta.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.mo_ta.label }}</label>
+                    <label for="{{ form.mo_ta.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.mo_ta.label }}</label>
                     {{ form.mo_ta }}
                     {% if form.mo_ta.errors %}<p class="text-red-500 text-xs mt-1">{{ form.mo_ta.errors|striptags }}</p>{% endif %}
                 </div>
@@ -102,136 +81,173 @@
         </fieldset>
         {# --- Hết khối Thông tin cơ bản --- #}
 
-
         {# --- Khối Thông tin vị trí --- #}
-         <fieldset class="border rounded-md px-4 pb-4 bg-white shadow-sm">
-            <legend class="text-xl font-bold mb-4 px-2 text-gray-700">Thông tin vị trí</legend>
+        <fieldset class="border rounded-md px-4 pt-3 pb-4 bg-white shadow-sm">
+            <legend class="text-lg font-semibold mb-4 px-2 text-gray-700 -ml-2">Thông tin vị trí</legend>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                 <div class="md:col-span-2">
-                    <label for="{{ form.dia_chi.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.dia_chi.label }}</label>
+                <div class="md:col-span-2">
+                    <label for="{{ form.dia_chi.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.dia_chi.label }}</label>
                     {{ form.dia_chi }}
                     {% if form.dia_chi.errors %}<p class="text-red-500 text-xs mt-1">{{ form.dia_chi.errors|striptags }}</p>{% endif %}
                 </div>
-                 <div>
-                    <label for="{{ form.tinh_thanh.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.tinh_thanh.label }}</label>
+                <div>
+                    <label for="{{ form.tinh_thanh.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.tinh_thanh.label }}</label>
                     {{ form.tinh_thanh }}
                     {% if form.tinh_thanh.errors %}<p class="text-red-500 text-xs mt-1">{{ form.tinh_thanh.errors|striptags }}</p>{% endif %}
                 </div>
                 <div>
-                    <label for="{{ form.quan_huyen.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.quan_huyen.label }}</label>
+                    <label for="{{ form.quan_huyen.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.quan_huyen.label }}</label>
                     {{ form.quan_huyen }}
                     {% if form.quan_huyen.errors %}<p class="text-red-500 text-xs mt-1">{{ form.quan_huyen.errors|striptags }}</p>{% endif %}
                 </div>
                 <div class="md:col-span-2">
-                    <label for="{{ form.phuong_xa.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.phuong_xa.label }}</label>
+                    <label for="{{ form.phuong_xa.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.phuong_xa.label }}</label>
                     {{ form.phuong_xa }}
                     {% if form.phuong_xa.errors %}<p class="text-red-500 text-xs mt-1">{{ form.phuong_xa.errors|striptags }}</p>{% endif %}
                 </div>
-                {# Tọa độ (ẩn hoặc hiện tùy ý) #}
+                {# --- Ô nhập Vĩ độ (Latitude) --- #}
                 <div>
-                    <label for="{{ form.vi_do.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.vi_do.label }}</label>
-                    {{ form.vi_do }}
+                    {# ID mặc định của Django thường là id_<tên_trường> #}
+                    <label for="id_vi_do" class="block text-sm font-medium text-gray-700 mb-1">{{ form.vi_do.label }}</label>
+                    {{ form.vi_do }} {# Render input field #}
                     {% if form.vi_do.errors %}<p class="text-red-500 text-xs mt-1">{{ form.vi_do.errors|striptags }}</p>{% endif %}
                 </div>
+
+                {# --- Ô nhập Kinh độ (Longitude) --- #}
                 <div>
-                    <label for="{{ form.kinh_do.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.kinh_do.label }}</label>
-                    {{ form.kinh_do }}
+                    <label for="id_kinh_do" class="block text-sm font-medium text-gray-700 mb-1">{{ form.kinh_do.label }}</label>
+                    {{ form.kinh_do }} {# Render input field #}
                     {% if form.kinh_do.errors %}<p class="text-red-500 text-xs mt-1">{{ form.kinh_do.errors|striptags }}</p>{% endif %}
-                </div> 
+                </div>
+
+                {# --- THÊM DIV CHO BẢN ĐỒ --- #}
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Chọn vị trí trên bản đồ</label>
+                    <div id="locationMap" style="height: 300px; width: 100%;" class="border rounded-lg shadow-sm"></div>
+                    <p class="text-xs text-gray-500 mt-1">Nhấp vào bản đồ hoặc kéo thả ghim để chọn vị trí chính xác.</p>
+                </div>
+                {# --- KẾT THÚC DIV BẢN ĐỒ --- #}
             </div>
          </fieldset>
         {# --- Hết khối Thông tin vị trí --- #}
 
-        <fieldset class="border rounded-md px-4 pb-4 bg-white shadow-sm">
-            <legend class="text-xl font-bold mb-4 px-2 text-gray-700">Thông tin liên hệ</legend>
+        {# --- Khối Thông tin liên hệ --- #}
+        <fieldset class="border rounded-md px-4 pt-3 pb-4 bg-white shadow-sm">
+            <legend class="text-lg font-semibold mb-4 px-2 text-gray-700 -ml-2">Thông tin liên hệ</legend>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                 <div class="md:col-span-2"> {# Tên người bán chiếm cả hàng #}
-                    <label for="{{ form.ten_nguoi_ban.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.ten_nguoi_ban.label }}</label>
+                 <div class="md:col-span-2">
+                    <label for="{{ form.ten_nguoi_ban.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.ten_nguoi_ban.label }}</label>
                     {{ form.ten_nguoi_ban }}
                     {% if form.ten_nguoi_ban.errors %}<p class="text-red-500 text-xs mt-1">{{ form.ten_nguoi_ban.errors|striptags }}</p>{% endif %}
                 </div>
                  <div>
-                    <label for="{{ form.so_dien_thoai.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.so_dien_thoai.label }}</label>
+                    <label for="{{ form.so_dien_thoai.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.so_dien_thoai.label }}</label>
                     {{ form.so_dien_thoai }}
                     {% if form.so_dien_thoai.errors %}<p class="text-red-500 text-xs mt-1">{{ form.so_dien_thoai.errors|striptags }}</p>{% endif %}
                 </div>
                 <div>
-                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1 ml-3">{{ form.email.label }}</label>
+                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.email.label }}</label>
                     {{ form.email }}
                     {% if form.email.errors %}<p class="text-red-500 text-xs mt-1">{{ form.email.errors|striptags }}</p>{% endif %}
                 </div>
             </div>
         </fieldset>
+        {# --- Hết khối Thông tin liên hệ --- #}
 
-
-        {# --- Khối Ảnh chi tiết (Formset) --- #}
         <fieldset class="border rounded-md p-4 bg-white shadow-sm">
-            <legend class="text-xl font-bold mb-1 px-2 text-gray-700">Ảnh chi tiết</legend>
-            {{ formset.management_form }} {# Vẫn cần Management Form #}
+            <legend class="text-lg font-semibold mb-4 px-2 text-gray-700 -ml-2">Ảnh chi tiết</legend>
+            {{ formset.management_form }} {# Bắt buộc #}
 
-            {# Container cho các form ảnh #}
+             {# Hiển thị lỗi chung của formset (nếu có) #}
+            {% if formset.non_form_errors %}
+                <div class="p-3 bg-red-100 text-red-700 border border-red-200 rounded mb-4 text-sm">
+                    Lỗi chung của bộ ảnh: {{ formset.non_form_errors }}
+                </div>
+            {% endif %}
+
             <div id="image-formset-container" class="space-y-4">
                 {% for image_form in formset %}
-                    {# --- Bọc mỗi form trong một div với class ví dụ 'image-form-row' --- #}
-                    <div class="image-form-row border rounded p-3 {% if image_form.instance.pk %}bg-gray-50{% else %}bg-blue-50{% endif %} relative">
-                        {% for hidden in image_form.hidden_fields %}
+                    {# Class 'dynamic-form' để JS nhận diện #}
+                    <div class="dynamic-form border rounded p-3 {% if image_form.instance.pk %}bg-gray-50{% else %}bg-blue-50{% endif %} relative">
+                         {# Render các trường ẩn của formset (như ID) #}
+                         {% for hidden in image_form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
-                        
+
+                        {# Hiển thị ảnh cũ thu nhỏ #}
                         {% if image_form.instance.pk and image_form.instance.image %}
-                            <img src="{{ image_form.instance.image.url }}" alt="Ảnh chi tiết" class="h-20 w-20 ...">
+                            <img src="{{ image_form.instance.image.url }}" alt="Ảnh chi tiết" class="h-20 w-20 object-cover inline-block mr-4 mb-2 rounded align-top border">
                         {% endif %}
-                        <div class="inline-block align-top space-y-2" style="width: calc(100% - 100px);">
+
+                        {# Các trường của form ảnh #}
+                        <div class="inline-block align-top space-y-2" style="min-width: calc(100% - 100px);">
                              <div>
-                                <div class=" ml-3"><label ...>{{ image_form.image.label }}</label></div>
+                                {# Không cần label vì đã có trong fieldset chung #}
                                 {{ image_form.image }}
+                                {# Lỗi của trường image (nếu có) sẽ hiển thị bên dưới #}
                              </div>
                             <div>
-                                <div class=" ml-3"><label ...>{{ image_form.alt_text.label }}</label></div>
                                 {{ image_form.alt_text }}
+                                {% if image_form.alt_text.help_text %}<p class="text-xs text-gray-500 mt-1">{{ image_form.alt_text.help_text }}</p>{% endif %}
+                                {# Lỗi của trường alt_text (nếu có) sẽ hiển thị bên dưới #}
                             </div>
                         </div>
+
+                        {# Nút xóa ảnh #}
                         {% if image_form.instance.pk %}
                             <div class="absolute top-2 right-2">
-                                <label ...>{{ image_form.DELETE }} Xóa</label>
+                                <label for="{{ image_form.DELETE.id_for_label }}" class="text-red-600 text-xs cursor-pointer hover:underline" title="Đánh dấu để xóa ảnh này khi lưu">
+                                    {{ image_form.DELETE }} Xóa
+                                </label>
                             </div>
                         {% endif %}
-                         {% if image_form.errors %}
-                             <div class="text-red-500 ..."> ... </div>
-                         {% endif %}
-                    </div>
-                 {% endfor %}
-             </div>
 
-             {# --- Nút để thêm form mới --- #}
-             <button type="button" id="add-image-form-button" class="mt-3 text-sm bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200">
-                 + Thêm ảnh khác
-             </button>
-
-             {# --- Template ẩn cho form mới (quan trọng) --- #}
-             <div class="hidden" id="empty-image-form-template">
-                 {# Render empty_form vào đây, bọc trong cùng cấu trúc div như trên #}
-                 <div class="image-form-row border rounded p-3 bg-blue-50 relative">
-                      <div class="inline-block align-top space-y-2" style="width: calc(100% - 100px);">
-                         <div>
-                            <label for="{{ formset.empty_form.image.id_for_label }}" class="block ...">{{ formset.empty_form.image.label }}</label>
-                            {{ formset.empty_form.image }}
-                         </div>
-                        <div>
-                            <label for="{{ formset.empty_form.alt_text.id_for_label }}" class="block ...">{{ formset.empty_form.alt_text.label }}</label>
-                            {{ formset.empty_form.alt_text }}
-                        </div>
+                        {# --- HIỂN THỊ LỖI CHO image_form NÀY --- #}
+                        {% if image_form.errors %}
+                            <div class="text-red-500 text-xs mt-2 border-t border-red-200 pt-2">
+                                {# Lặp qua các lỗi của từng trường (ví dụ: image, alt_text) #}
+                                {% for field_name, error_list in image_form.errors.items %}
+                                    {% comment %} Không cần hiển thị lại tên field vì lỗi nằm ngay dưới field đó rồi
+                                    {% if field_name != '__all__' %}
+                                        <strong>{{ image_form.fields|get_item:field_name.label|default:field_name|title }}:</strong>
+                                    {% endif %}
+                                    {% endcomment %}
+                                    <ul class="list-disc list-inside ml-1">
+                                        {% for error in error_list %}
+                                            <li>{{ error|escape }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {# --- HẾT PHẦN HIỂN THỊ LỖI --- #}
                     </div>
-                    {# Không có nút xóa cho empty form #}
+                {% endfor %}
+            </div>
+
+            {# --- Nút để thêm form mới --- #}
+            <button type="button" id="add-image-form-button" class="mt-3 text-sm bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200 inline-flex items-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                Thêm ảnh khác
+            </button>
+
+            {# --- Template ẩn cho form mới --- #}
+            <div style="display: none;" id="empty-form-template">
+                 <div class="dynamic-form border rounded p-3 bg-blue-50 relative">
+                    {% for hidden in formset.empty_form.hidden_fields %} {{ hidden }} {% endfor %}
+                     <div class="inline-block align-top space-y-2" style="min-width: calc(100% - 100px);">
+                        <div> {{ formset.empty_form.image }} </div>
+                        <div> {{ formset.empty_form.alt_text }} </div>
+                   </div>
                  </div>
-             </div>
-
-         </fieldset>
+            </div>
+             <p class="text-xs text-gray-500 mt-3">Bạn có thể tải lên nhiều ảnh chi tiết. Để xóa ảnh cũ, đánh dấu vào ô "Xóa" bên cạnh ảnh đó và lưu lại.</p>
+        </fieldset>
         {# --- Hết khối Ảnh chi tiết --- #}
 
 
         {# --- Nút Submit --- #}
-        <div class="mt-8 text-right"> {# Đẩy nút về bên phải #}
+        <div class="mt-8 text-right">
             <button type="submit" class="bg-indigo-600 text-white py-2 px-6 rounded-md font-semibold hover:bg-indigo-700 transition duration-200">
                 {% if product %}Lưu thay đổi{% else %}Đăng tin{% endif %}
             </button>
@@ -242,10 +258,9 @@
     {# --- Hết form --- #}
 </div>
 
-{# --- CSS cơ bản cho input (Thêm vào <head> hoặc file CSS riêng nếu cần) --- #}
-{# Đảm bảo các input của bạn có class phù hợp từ Tailwind hoặc CSS tùy chỉnh #}
+{# --- CSS cơ bản cho input --- #}
 <style>
-    /* Áp dụng style cơ bản cho các input, select, textarea trong form này */
+    /* Áp dụng style cơ bản cho các input, select, textarea */
     form input[type='text'],
     form input[type='number'],
     form input[type='email'],
@@ -264,39 +279,141 @@
     }
     form input[type='checkbox'],
     form input[type='radio'] {
-         @apply rounded border-gray-300 text-indigo-600 focus:ring-indigo-500;
+         @apply h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500;
     }
+     /* Style cho input file */
     form input[type='file'] {
-         @apply block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100;
+         @apply block w-full text-sm text-gray-500 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100;
+    }
+     /* Style cho nút thêm (nếu plugin không tự tạo) */
+    #add-image-form-button {
+        /* Các class Tailwind đã có */
+    }
+     /* Style cho nút xóa tự tạo bởi plugin (nếu cần tùy chỉnh) */
+    .delete-image-form-button {
+         @apply text-red-500 hover:text-red-700 text-xs font-medium ml-4;
     }
 
 </style>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'js/jquery.formset.js' %}"></script>
+
+{# --- Nhúng jQuery và Plugin --- #}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="{% static 'js/jquery.formset.js' %}"></script> {# Đảm bảo đường dẫn đúng #}
+
+{# --- Khởi tạo Plugin --- #}
 <script type="text/javascript">
-    $(function() {
-        $('#image-formset-container .image-form-row').formset({
-            prefix: '{{ formset.prefix }}', // Lấy prefix từ context ('images')
-            addText: '+ Thêm ảnh nữa',      // Thay đổi text nút thêm (plugin tự tạo hoặc dùng nút của bạn)
-            deleteText: 'Xóa ảnh này',    // Thay đổi text nút xóa (plugin tự tạo hoặc dùng nút của bạn)
-            addCssClass: 'add-image-form-button', // Class cho nút thêm plugin tự tạo (nếu dùng)
-            deleteCssClass: 'delete-image-form-button', // Class cho nút xóa plugin tự tạo
-            emptyCssClass: 'empty-form', // Class để xác định form rỗng (ít dùng)
-            added: function(row) {
-                // Callback sau khi thêm form (tùy chọn)
-                console.log('Form mới đã được thêm');
-                // Có thể thêm logic JS khác ở đây, ví dụ: preview ảnh mới tải lên
-            },
-            removed: function(row) {
-                // Callback sau khi xóa form (tùy chọn)
-                console.log('Form đã được xóa');
+    document.addEventListener('DOMContentLoaded', function() {
+        const addButton = document.getElementById('add-image-form-button');
+        const formsetContainer = document.getElementById('image-formset-container');
+        const emptyFormTemplate = document.getElementById('empty-form-template').innerHTML; // Lấy HTML của template
+        const totalFormsInput = document.getElementById('id_{{ formset.prefix }}-TOTAL_FORMS'); // Input quản lý tổng số form
+    
+        if (addButton && formsetContainer && totalFormsInput && emptyFormTemplate) {
+            addButton.addEventListener('click', function() {
+                // 1. Lấy tổng số form hiện tại
+                let currentTotalForms = parseInt(totalFormsInput.value, 10);
+    
+                // 2. Tạo HTML cho form mới bằng cách thay thế __prefix__
+                //    Regex /__prefix__/g đảm bảo thay thế tất cả các lần xuất hiện
+                let newFormHtml = emptyFormTemplate.replace(/__prefix__/g, currentTotalForms);
+    
+                // 3. Tạo một div tạm để chứa form mới và thêm vào container
+                let tempDiv = document.createElement('div');
+                tempDiv.innerHTML = newFormHtml;
+                // Lấy phần tử con đầu tiên (chính là div.image-form-row) từ div tạm
+                let newFormElement = tempDiv.firstElementChild;
+                if (newFormElement) {
+                     formsetContainer.appendChild(newFormElement);
+    
+                     // 4. Tăng giá trị TOTAL_FORMS lên 1
+                     totalFormsInput.value = currentTotalForms + 1;
+                } else {
+                    console.error("Could not create new form element from template.");
+                }
+            });
+        } else {
+            console.error("Could not find all required elements for dynamic formset:",
+                { addButton, formsetContainer, totalFormsInput, emptyFormTemplateExists: !!emptyFormTemplate });
+        }
+    });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const latInput = document.getElementById('id_vi_do');
+            const lonInput = document.getElementById('id_kinh_do');
+            const mapContainer = document.getElementById('locationMap');
+        
+            // --- Tọa độ mặc định (Ví dụ: Trung tâm Hà Nội) ---
+            let defaultLat = 21.0285;
+            let defaultLon = 105.8542;
+            let initialZoom = 12; // Zoom rộng hơn ban đầu
+        
+            // --- Lấy tọa độ ban đầu từ input nếu có (trường hợp sửa) ---
+            const initialLat = parseFloat(latInput.value);
+            const initialLon = parseFloat(lonInput.value);
+        
+            if (!isNaN(initialLat) && !isNaN(initialLon)) {
+                defaultLat = initialLat;
+                defaultLon = initialLon;
+                initialZoom = 16; // Zoom gần hơn nếu đã có tọa độ
             }
-            // --- Nếu bạn muốn dùng nút "Thêm" tùy chỉnh của mình ---
-            // addButton: "#add-image-form-button", // Selector của nút thêm bạn đã tạo
-            // --- Nếu dùng template tùy chỉnh ---
-            // formTemplate: "#empty-image-form-template", // Selector của template ẩn
+        
+            // --- Khởi tạo bản đồ ---
+            if (mapContainer) {
+                 try {
+                    const map = L.map('locationMap').setView([defaultLat, defaultLon], initialZoom);
+        
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    }).addTo(map);
+        
+                    // --- Tạo marker có thể kéo thả ---
+                    const marker = L.marker([defaultLat, defaultLon], {
+                        draggable: true
+                    }).addTo(map);
+        
+                    // --- Hàm cập nhật input từ tọa độ ---
+                    function updateInputs(latlng) {
+                        latInput.value = latlng.lat.toFixed(6); // Làm tròn 6 chữ số thập phân
+                        lonInput.value = latlng.lng.toFixed(6);
+                    }
+        
+                    // --- Cập nhật input khi kéo thả marker xong ---
+                    marker.on('dragend', function (e) {
+                        updateInputs(e.target.getLatLng());
+                    });
+        
+                    // --- Cập nhật marker và input khi nhấp vào bản đồ ---
+                    map.on('click', function(e) {
+                        const clickedLatLng = e.latlng;
+                        marker.setLatLng(clickedLatLng);
+                        updateInputs(clickedLatLng);
+                    });
+        
+                    // --- Hàm cập nhật marker từ input ---
+                    function updateMarkerFromInputs() {
+                        const currentLat = parseFloat(latInput.value);
+                        const currentLon = parseFloat(lonInput.value);
+                        if (!isNaN(currentLat) && !isNaN(currentLon)) {
+                            const newLatLng = L.latLng(currentLat, currentLon);
+                            marker.setLatLng(newLatLng);
+                            map.panTo(newLatLng); // Di chuyển tâm bản đồ đến vị trí mới
+                        }
+                    }
+        
+                    // --- Lắng nghe sự kiện thay đổi trên ô input ---
+                    latInput.addEventListener('input', updateMarkerFromInputs);
+                    lonInput.addEventListener('input', updateMarkerFromInputs);
+        
+                 } catch(e) {
+                     console.error("Lỗi khởi tạo bản đồ Leaflet trên form:", e);
+                     mapContainer.innerHTML = '<p class="p-4 text-center text-red-500">Không thể tải bản đồ.</p>';
+                 }
+            } else {
+                console.warn("Không tìm thấy div chứa bản đồ 'locationMap'.");
+            }
         });
-    })
-</script>
+        </script>
 
 {% endblock %}
