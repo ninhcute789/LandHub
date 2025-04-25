@@ -39,8 +39,8 @@
                 <div x-data="{ isWishlisted: {{ is_currently_wishlisted|yesno:'true,false'|lower }} }" class="mb-4">
                         <button @click="toggleWishlist({{ product.id }}, $event)"
                                 :class="{
-                                    'bg-indigo-600 hover:bg-indigo-700 text-white': isWishlisted,
-                                    'bg-gray-200 hover:bg-gray-300 text-gray-700': !isWishlisted
+                                    'duration-300 bg-indigo-600 hover:bg-indigo-700 text-white': isWishlisted,
+                                    'duration-300 bg-gray-200 hover:bg-gray-300 text-gray-700': !isWishlisted
                                 }"
                                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
                             {# Icon trái tim đầy - hiển thị khi isWishlisted là true #}
@@ -65,7 +65,6 @@
 
         <div class="">
             {# Thay product.name bằng product.tieu_de #}
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ product.tieu_de }}</h1>
             {# Thay product.price bằng product.gia, định dạng lại #}
             <p class="text-red-600 font-bold text-2xl mb-6">{{ product.gia|floatformat:"0"|intcomma }} VNĐ</p>
 
