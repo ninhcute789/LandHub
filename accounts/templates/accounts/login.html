@@ -30,6 +30,9 @@
           <input
             type="text"
             name="username"
+            autocomplete="off"
+            readonly
+            onfocus="this.removeAttribute('readonly');"
             required
             class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             placeholder="Nhập tên đăng nhập" />
@@ -41,6 +44,7 @@
           <input
             type="password"
             name="password"
+            autocomplete="new-password"
             required
             class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             placeholder="Nhập mật khẩu" />
