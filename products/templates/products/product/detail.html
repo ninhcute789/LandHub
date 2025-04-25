@@ -13,7 +13,6 @@
                    <img id="mainProductImage"
                         src="{% if main_image_url %}{{ main_image_url }}{% else %}{% static 'placeholder.png' %}{% endif %}"
                         alt="{{ product.tieu_de }}"
-                        {# Giữ lại class cũ hoặc điều chỉnh nếu cần #}
                         class="w-full h-auto object-contain block md:max-h-[600px]">
                {% endwith %}
            </div>
@@ -32,7 +31,38 @@
                </button>
                {% endfor %}
            </div>
-       </div>
+        </div>
+
+        <div class="p-6 md:w-1/2">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ product.tieu_de }}</h1>
+            {% if user.is_authenticated %}
+                <div x-data="{ isWishlisted: {{ is_currently_wishlisted|yesno:'true,false'|lower }} }" class="mb-4">
+                        <button @click="toggleWishlist({{ product.id }}, $event)"
+                                :class="{
+                                    'bg-indigo-600 hover:bg-indigo-700 text-white': isWishlisted,
+                                    'bg-gray-200 hover:bg-gray-300 text-gray-700': !isWishlisted
+                                }"
+                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                            {# Icon trái tim đầy - hiển thị khi isWishlisted là true #}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor" x-show="isWishlisted" style="display: none;">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                        </svg>
+                        {# Icon trái tim rỗng - hiển thị khi isWishlisted là false #}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" x-show="!isWishlisted">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                            <span x-text="isWishlisted ? 'Đã quan tâm' : 'Quan tâm'">Quan tâm</span>
+                        </button>
+                    </div>
+                {% else %}
+                <div class="mb-4">
+                    <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /> </svg>
+                        Đăng nhập để quan tâm
+                </a>
+                </div>
+                {% endif %}
+
         <div class="p-6 md:w-1/2">
             {# Thay product.name bằng product.tieu_de #}
             <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ product.tieu_de }}</h1>
@@ -163,6 +193,56 @@
         </div>
     </div>
 </div>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+function toggleWishlist(productId, event) {
+    const button = event.currentTarget;
+    // Lấy trạng thái từ Alpine.js data
+    const alpineData = Alpine.closestDataStack(button)[0];
+
+    fetch(`/wishlist/toggle/${productId}/`, { // Đảm bảo URL đúng với urls.py
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken // Lấy CSRF token
+        },
+        // Không cần body nếu không gửi thêm data
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            // Cập nhật trạng thái trong Alpine.js để giao diện tự thay đổi
+            alpineData.isWishlisted = data.is_added;
+            // Tùy chọn: hiển thị thông báo thành công/thất bại ngắn gọn
+            // console.log('Wishlist updated:', data.is_added);
+        } else {
+            console.error('Failed to update wishlist');
+            // Tùy chọn: hiển thị thông báo lỗi
+        }
+    })
+    .catch(error => {
+        console.error('Error toggling wishlist:', error);
+        // Tùy chọn: hiển thị thông báo lỗi
+    });
+}
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

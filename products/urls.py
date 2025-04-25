@@ -12,6 +12,11 @@ urlpatterns = [
     # --- URLS MỚI CHO QUẢN LÝ TIN ĐĂNG ---
     path('my-listings/', views.my_listings, name='my_listings'),
     path('listing/create/', views.create_listing, name='create_listing'),
+    
+    # --- URLS MỚI CHO BÀI ĐĂNG QUAN TÂM ---
+    path('wishlist/toggle/<int:product_id>/', views.toggle_wishlist, name='toggle_wishlist'),
+    path('wishlist/', views.wishlist_view, name='wishlist_view'),
+    
     # Dùng <int:pk> thay vì id/slug cho edit/delete
     path('listing/<int:pk>/edit/', views.edit_listing, name='edit_listing'),
     path('listing/<int:pk>/delete/', views.delete_listing, name='delete_listing'),

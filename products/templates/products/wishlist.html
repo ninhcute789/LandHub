@@ -1,0 +1,161 @@
+{# products/templates/products/wishlist.html #}
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Bài đăng đã quan tâm{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Bài đăng đã quan tâm</h1>
+        {# Có thể thêm nút quay lại hoặc link khác nếu muốn #}
+    </div>
+
+    {% if listings %} {# Mở if ở đây #}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for listing in listings %}
+            <div class="bg-white shadow-md rounded-lg overflow-hidden border hover:shadow-xl duration-300 relative group product-card-{{ listing.id }}">
+                 {# Nội dung card sản phẩm... #}
+                 <a href="{{ listing.get_absolute_url }}">
+                    {% if listing.anh_dai_dien %}
+                    <img src="{{ listing.anh_dai_dien.url }}" alt="{{ listing.tieu_de }}" class="w-full h-48 object-cover">
+                    {% else %}
+                    <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">Ảnh không có</div>
+                    {% endif %}
+                 </a>
+                 <div class="p-4">
+                    <h3 class="font-semibold text-base mb-1 truncate">
+                        <a href="{{ listing.get_absolute_url }}" class="hover:text-indigo-700">{{ listing.tieu_de }}</a>
+                    </h3>
+                    <p class="text-xs text-gray-500 mb-2 truncate">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline-block mr-1 -mt-0.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                        </svg>
+                         {{ listing.dia_chi|default:listing.quan_huyen|default:listing.tinh_thanh }}
+                    </p>
+                    <div class="flex justify-between items-center text-sm mb-3">
+                        <p class="text-indigo-600 font-bold text-lg">
+                            {% if listing.gia > 0 %}{{ listing.gia|intcomma }} VNĐ{% else %}Thỏa thuận{% endif %}
+                        </p>
+                        <p class="text-gray-600">{{ listing.dien_tich|floatformat:"-1" }} m²</p>
+                    </div>
+                     <p class="text-xs text-gray-400 text-right">Đăng {{ listing.ngay_dang|timesince }} trước</p>
+                 </div>
+                 {# Nút bỏ quan tâm nhanh #}
+                 <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      x-data="{ idToRemove: {{ listing.id }} }">
+                     <button @click="removeWishlist(idToRemove, $event)"
+                             title="Bỏ quan tâm"
+                             class="bg-red-500 text-white p-1.5 rounded-full shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                           </svg>
+                     </button>
+                 </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-gray-500 mt-10">Bạn chưa quan tâm bài đăng nào.</p>
+    {% endif %} {# <-- THÊM ENDIF Ở ĐÂY #}
+</div>
+
+{# Script cho nút bỏ quan tâm nhanh #}
+<script>
+// --- Đảm bảo getCookie và csrftoken tồn tại ---
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+// ---------------------------------------------
+
+function removeWishlist(productId, event) {
+    const button = event.currentTarget;
+    const card = document.querySelector(`.product-card-${productId}`);
+    console.log('Attempting to remove product ID:', productId);
+    console.log('Found card element:', card);
+
+    if (!confirm(`Bạn có chắc muốn bỏ quan tâm bài đăng này không?`)) {
+        return;
+    }
+
+    if (!csrftoken) {
+        console.error('CSRF token not found!');
+        alert('Lỗi bảo mật, vui lòng tải lại trang.');
+        return;
+    }
+
+    fetch(`/wishlist/toggle/${productId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+    })
+    .then(response => {
+        console.log('Fetch response status:', response.status);
+        if (!response.ok) {
+             throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Received data:', data);
+        if (data.status === 'ok' && !data.is_added) {
+            console.log('Backend confirmed removal. Removing card from DOM...');
+            if (card) {
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    card.remove();
+                    console.log('Card removed.');
+                    // Kiểm tra xem còn card nào không...
+                    const remainingCards = document.querySelectorAll('[class*="product-card-"]');
+                     console.log('Remaining cards:', remainingCards.length);
+                    if (remainingCards.length === 0) {
+                        const container = card.closest('.container');
+                         if (container) {
+                            const noItemsMessage = container.querySelector('.text-center.text-gray-500');
+                            if (noItemsMessage) {
+                                noItemsMessage.style.display = 'block';
+                             } else {
+                                const p = document.createElement('p');
+                                p.className = 'text-center text-gray-500 mt-10';
+                                p.textContent = 'Bạn chưa quan tâm bài đăng nào.';
+                                const grid = container.querySelector('.grid');
+                                if (grid) grid.remove();
+                                const heading = container.querySelector('h1');
+                                if (heading) heading.after(p);
+                                 console.log('Displayed "no items" message.');
+                             }
+                         }
+                    }
+                }, 500);
+            } else {
+                 console.error('Card element not found after successful removal confirmation.');
+            }
+        } else {
+            console.error('Failed to remove from wishlist or backend response invalid:', data);
+            alert('Có lỗi xảy ra khi bỏ quan tâm, vui lòng thử lại.');
+        }
+    })
+    .catch(error => {
+        console.error('Error removing from wishlist:', error);
+         alert('Có lỗi xảy ra, vui lòng thử lại hoặc kiểm tra kết nối mạng.');
+    });
+}
+</script>
+{% endblock %}

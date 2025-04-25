@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.conf import settings
 import uuid
 
 # --- Model Category (giữ nguyên hoặc xóa/sửa tùy ý) ---
@@ -65,6 +66,13 @@ class Product(models.Model):
         # Bạn cần quyết định giá trị mặc định cho các tin đã tồn tại
         # null=True, blank=True, # Tùy chọn 1: Cho phép null tạm thời
         # default=1 # Tùy chọn 2: Gán cho user có id=1 (thường là admin đầu tiên)
+    )
+    
+    users_wishlist = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="wishlist_products",
+        blank=True,
+        verbose_name=_('Người dùng quan tâm')
     )
     
     # --- 🧱 Thông tin cơ bản ---
@@ -154,6 +162,11 @@ class Product(models.Model):
                 num += 1
             self.slug = unique_slug
         super().save(*args, **kwargs)
+        
+    def is_in_user_wishlist(self, user):
+        if user.is_authenticated:
+            return self.users_wishlist.filter(pk=user.pk).exists()
+        return False
         
 class ProductImage(models.Model):
     product = models.ForeignKey(

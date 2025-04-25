@@ -6,6 +6,8 @@ from django.urls import reverse_lazy
 from django.db import transaction
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from decimal import Decimal, InvalidOperation
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 from .models import Product, ProductImage #, Category
 from .forms import ProductForm, ProductImageFormSet # Import form
@@ -77,7 +79,7 @@ def product_list(request):
         pass
     
     
-    paginator = Paginator(products, 10)
+    paginator = Paginator(products, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -103,13 +105,19 @@ def product_list(request):
 # View product_detail giữ nguyên hoặc cập nhật nếu cần
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
-    # Lấy tất cả ảnh chi tiết liên quan đến sản phẩm này
-    # Sử dụng related_name 'images' đã định nghĩa trong ForeignKey của ProductImage
     detail_images = product.images.all()
+
+    # --- ✨ TÍNH TOÁN TRẠNG THÁI WISHLIST TRONG VIEW ✨ ---
+    is_currently_wishlisted = False # Mặc định là False
+    if request.user.is_authenticated:
+        # Gọi phương thức is_in_user_wishlist ở đây
+        is_currently_wishlisted = product.is_in_user_wishlist(request.user)
+    # ---------------------------------------------------
 
     context = {
         'product': product,
-        'detail_images': detail_images, # Truyền danh sách ảnh chi tiết vào context
+        'detail_images': detail_images,
+        'is_currently_wishlisted': is_currently_wishlisted, # <-- Truyền vào context
     }
     return render(request, 'products/product/detail.html', context)
 
@@ -224,6 +232,35 @@ def delete_listing(request, pk):
 
     # Nếu là GET, hiển thị trang xác nhận xóa
     return render(request, 'products/listing_delete_confirm.html', {'product': product})
+
+@login_required # Chỉ user đăng nhập mới dùng được
+@require_POST # Chỉ chấp nhận phương thức POST
+def toggle_wishlist(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    user = request.user
+    is_added = False # Biến để biết là thêm hay xóa
+
+    if product.users_wishlist.filter(pk=user.pk).exists():
+        # Nếu đã có -> Xóa khỏi wishlist
+        product.users_wishlist.remove(user)
+        is_added = False
+    else:
+        # Nếu chưa có -> Thêm vào wishlist
+        product.users_wishlist.add(user)
+        is_added = True
+
+    # Trả về JSON để cập nhật nút bấm trên giao diện (AJAX)
+    return JsonResponse({'status': 'ok', 'is_added': is_added})
+
+@login_required
+def wishlist_view(request):
+    # Lấy tất cả sản phẩm mà user hiện tại đã thêm vào wishlist
+    # Dùng related_name "wishlist_products" đã định nghĩa trong model
+    wishlist_items = request.user.wishlist_products.filter(available=True).order_by('-ngay_dang')
+    context = {
+        'listings': wishlist_items
+    }
+    return render(request, 'products/wishlist.html', context) # Dùng template mới wishlist.html
 
 
 @login_required
