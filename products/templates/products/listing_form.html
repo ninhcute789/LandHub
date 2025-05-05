@@ -28,7 +28,7 @@
                     {% if form.gia.errors %}<p class="text-red-500 text-xs mt-1">{{ form.gia.errors|striptags }}</p>{% endif %}
                 </div>
                 <div>
-                    <label for="{{ form.dien_tich.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.dien_tich.label }} (m²)</label>
+                    <label for="{{ form.dien_tich.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.dien_tich.label }}</label>
                     {{ form.dien_tich }}
                     {% if form.dien_tich.errors %}<p class="text-red-500 text-xs mt-1">{{ form.dien_tich.errors|striptags }}</p>{% endif %}
                 </div>
@@ -43,12 +43,12 @@
                     {% if form.huong.errors %}<p class="text-red-500 text-xs mt-1">{{ form.huong.errors|striptags }}</p>{% endif %}
                 </div>
                 <div>
-                    <label for="{{ form.mat_tien.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.mat_tien.label }} (m)</label>
+                    <label for="{{ form.mat_tien.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.mat_tien.label }}</label>
                     {{ form.mat_tien }}
                     {% if form.mat_tien.errors %}<p class="text-red-500 text-xs mt-1">{{ form.mat_tien.errors|striptags }}</p>{% endif %}
                 </div>
                 <div>
-                    <label for="{{ form.chieu_dai.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.chieu_dai.label }} (m)</label>
+                    <label for="{{ form.chieu_dai.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.chieu_dai.label }}</label>
                     {{ form.chieu_dai }}
                     {% if form.chieu_dai.errors %}<p class="text-red-500 text-xs mt-1">{{ form.chieu_dai.errors|striptags }}</p>{% endif %}
                 </div>
